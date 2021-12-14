@@ -13,9 +13,10 @@ import Input from '../../components/Input';
 import FailState from './components/FailState';
 import LoadingState from './components/LoadingState';
 import { tournamentsSelector } from '../../selectors/tournaments';
-import { Tournement } from './types';
+import { Tournament } from './types';
 import TournamentCard from './components/TournementCard';
 import styled from 'styled-components';
+import EmptyResultState from './components/EmptyResultState';
 
 const TournamentLister = styled.div`
   display: grid;
@@ -49,7 +50,7 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
     dispatch(deleteTournament(id));
   };
 
-  const _onEdit = (tournament: Tournement) => {
+  const _onEdit = (tournament: Tournament) => {
     dispatch(updateTournament(tournament));
   };
 
@@ -59,18 +60,21 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
     }
   };
 
-  const tournamantListComponent = (
-    <TournamentLister>
-      {list.map((i: Tournement) => (
-        <TournamentCard
-          key={i.id}
-          tournament={i}
-          onDelete={_onDelete}
-          onEdit={_onEdit}
-        />
-      ))}
-    </TournamentLister>
-  );
+  const tournamantListComponent =
+    list.length === 0 ? (
+      <EmptyResultState />
+    ) : (
+      <TournamentLister>
+        {list.map((i: Tournament) => (
+          <TournamentCard
+            key={i.id}
+            tournament={i}
+            onDelete={_onDelete}
+            onEdit={_onEdit}
+          />
+        ))}
+      </TournamentLister>
+    );
 
   return (
     <FlexContainer direction="column" justify="center">

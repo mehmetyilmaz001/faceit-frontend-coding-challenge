@@ -3,7 +3,7 @@ export interface Participants {
   max: number;
 }
 
-export interface Tournement {
+export interface Tournament {
   id: string;
   name: string;
   organizer: string;

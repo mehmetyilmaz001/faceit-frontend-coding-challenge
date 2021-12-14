@@ -1,4 +1,4 @@
-import { Tournement } from './../features/tournement-management/types';
+import { Tournament } from './../features/tournement-management/types';
 import { API_TOURNAMENTS_URL } from './../constants/api';
 import { actionTypes } from './constants';
 
@@ -13,15 +13,24 @@ export const getTournaments = () => async (dispatch: any) => {
     const response = await fetch(API_TOURNAMENTS_URL);
     const tournaments = await response.json();
 
-    dispatch({
-      type: actionTypes.GET_TOURNAMENTS,
-      payload: tournaments
-    });
+    if (response.status === 200) {
+      dispatch({
+        type: actionTypes.GET_TOURNAMENTS,
+        payload: tournaments
+      });
+    } else {
+      dispatch({
+        type: actionTypes.SET_HAS_ERROR,
+        payload: true
+      });
+    }
   } catch (error) {
-    // dispatch({
-    //   type: actionTypes.GET_TOURNAMENTS,
-    //   payload: []
-    // });
+    console.log('getTournaments error', error);
+
+    dispatch({
+      type: actionTypes.SET_HAS_ERROR,
+      payload: true
+    });
   } finally {
     dispatch({
       type: actionTypes.SET_LOADING,
@@ -39,10 +48,15 @@ export const createTournament = (newTournamentName: string) => async (
     body: JSON.stringify({ name: newTournamentName })
   });
   const createResponse = await response.json();
-  if (createResponse) dispatch(getTournaments());
+
+  if (response.ok && createResponse)
+    dispatch({
+      type: actionTypes.CREATE_TOURNAMENT,
+      payload: createResponse
+    });
 };
 
-export const updateTournament = (tournament: Tournement) => async (
+export const updateTournament = (tournament: Tournament) => async (
   dispatch: any
 ) => {
   const response = await fetch(`${API_TOURNAMENTS_URL}/${tournament.id}`, {

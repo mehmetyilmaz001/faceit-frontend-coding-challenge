@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import Button from '../../../components/Button';
 import H6 from '../../../components/H6';
 import theme from '../../../theme';
-import { Tournement } from '../types';
+import { Tournament } from '../types';
 
 interface TournamentCardProps {
-  tournament: Tournement;
-  onEdit: (tournement: Tournement) => void;
+  tournament: Tournament;
+  onEdit: (tournement: Tournament) => void;
   onDelete: (id: string) => void;
 }
 
