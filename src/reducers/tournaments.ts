@@ -24,6 +24,23 @@ export default function tournaments(
     case actionTypes.GET_TOURNAMENTS:
       return { ...state, list: action.payload };
 
+    case actionTypes.UPDATE_TOURNAMENT:
+      const updatedItem = action.payload as Tournement;
+      const updatedList = state.list.map(t => {
+        if (t.id === updatedItem.id) {
+          return {
+            ...t,
+            name: updatedItem.name
+          };
+        }
+        return t;
+      });
+      return { ...state, list: updatedList };
+
+    case actionTypes.DELETE_TOURNAMENT:
+      const newList = state.list.filter(t => t.id !== action.payload);
+      return { ...state, list: newList };
+
     default:
       return state;
   }

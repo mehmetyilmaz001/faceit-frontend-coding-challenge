@@ -5,8 +5,8 @@ import H6 from '../../../components/H6';
 import theme from '../../../theme';
 import { Tournement } from '../types';
 
-interface TournementCardProps {
-  tournement: Tournement;
+interface TournamentCardProps {
+  tournament: Tournement;
   onEdit: (tournement: Tournement) => void;
   onDelete: (id: string) => void;
 }
@@ -25,18 +25,18 @@ const ButtonsContiner = styled.div`
   margin-top: ${theme.spacing(1.8)};
 `;
 
-const TournementCard: FunctionComponent<TournementCardProps> = ({
-  tournement,
+const TournamentCard: FunctionComponent<TournamentCardProps> = ({
+  tournament,
   onEdit,
   onDelete
 }) => {
-  const startDate = new Date(tournement.startDate);
+  const startDate = new Date(tournament.startDate);
 
   const openEditPropt = () => {
-    const name = window.prompt('New tournament name', tournement.name);
+    const name = window.prompt('New tournement name', tournament.name);
     if (name) {
       onEdit({
-        ...tournement,
+        ...tournament,
         name
       });
     }
@@ -44,23 +44,23 @@ const TournementCard: FunctionComponent<TournementCardProps> = ({
 
   return (
     <CardContainer>
-      <H6>{tournement.name}</H6>
+      <H6>{tournament.name}</H6>
 
       <div className="meta-data">
-        Organizer: {tournement.organizer || ''} <br />
-        Game: {tournement.game || ''} <br />
+        Organizer: {tournament.organizer || ''} <br />
+        Game: {tournament.game || ''} <br />
         Participants:{' '}
-        {`${tournement.participants.current}/${tournement.participants.max}`}{' '}
+        {`${tournament.participants.current}/${tournament.participants.max}`}{' '}
         <br />
         Start: {startDate.toLocaleString('en-GB')} <br />
       </div>
 
       <ButtonsContiner>
         <Button onClick={openEditPropt}>EDIT</Button>
-        <Button onClick={() => onDelete(tournement.id)}>DELETE</Button>
+        <Button onClick={() => onDelete(tournament.id)}>DELETE</Button>
       </ButtonsContiner>
     </CardContainer>
   );
 };
 
-export default TournementCard;
+export default TournamentCard;

@@ -1,3 +1,4 @@
+import { Tournement } from './../features/tournement-management/types';
 import { API_TOURNAMENTS_URL } from './../constants/api';
 import { actionTypes } from './constants';
 
@@ -27,4 +28,18 @@ export const getTournaments = () => async (dispatch: any) => {
       payload: false
     });
   }
+};
+
+export const updateTournament = (tournament: Tournement) => {
+  return {
+    type: actionTypes.UPDATE_TOURNAMENT,
+    payload: tournament
+  };
+};
+
+export const deleteTournament = (id: string) => {
+  return {
+    type: actionTypes.DELETE_TOURNAMENT,
+    payload: id
+  };
 };
