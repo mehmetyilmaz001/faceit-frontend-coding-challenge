@@ -7,6 +7,7 @@ const Button = styled.button`
   border-radius: ${theme.borderRadius};
   color: ${theme.palette.primary.main};
   padding: ${theme.spacing(2)};
+  cursor: pointer;
   ${theme.typography.button};
 
   &:hover {
