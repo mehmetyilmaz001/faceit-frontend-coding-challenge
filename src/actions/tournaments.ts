@@ -18,10 +18,10 @@ export const getTournaments = () => async (dispatch: any) => {
       payload: tournaments
     });
   } catch (error) {
-    dispatch({
-      type: actionTypes.GET_TOURNAMENTS,
-      payload: []
-    });
+    // dispatch({
+    //   type: actionTypes.GET_TOURNAMENTS,
+    //   payload: []
+    // });
   } finally {
     dispatch({
       type: actionTypes.SET_LOADING,

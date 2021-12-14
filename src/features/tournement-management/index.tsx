@@ -4,6 +4,7 @@ import {
   createTournament,
   deleteTournament,
   getTournaments,
+  searchTournament,
   updateTournament
 } from '../../actions/tournaments';
 import Button from '../../components/Button';
@@ -16,7 +17,7 @@ import { Tournement } from './types';
 import TournamentCard from './components/TournementCard';
 import styled from 'styled-components';
 
-const TournementLister = styled.div`
+const TournamentLister = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr;
@@ -28,15 +29,13 @@ interface TournementManagamentProps {}
 
 const TournementManagament: FunctionComponent<TournementManagamentProps> = () => {
   const dispatch = useDispatch();
-  const { list, loading } = useSelector(tournamentsSelector);
+  const { list, loading, hasError } = useSelector(tournamentsSelector);
+
+  const [search, setSearch] = React.useState('');
 
   useEffect(() => {
     dispatch(getTournaments());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   console.log('list', list);
-  // }, [list]);
 
   const _onCreate = () => {
     const newTournamentName = window.prompt('New Tournament Name');
@@ -54,32 +53,48 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
     dispatch(updateTournament(tournament));
   };
 
+  const _onSearch = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      dispatch(searchTournament(search));
+    }
+  };
+
+  const tournamantListComponent = (
+    <TournamentLister>
+      {list.map((i: Tournement) => (
+        <TournamentCard
+          key={i.id}
+          tournament={i}
+          onDelete={_onDelete}
+          onEdit={_onEdit}
+        />
+      ))}
+    </TournamentLister>
+  );
+
   return (
     <FlexContainer direction="column" justify="center">
       <FlexContainer direction="row" justify="space-between">
-        <Input placeholder="Search tournament..." />
+        <Input
+          placeholder="Search tournament..."
+          onChange={e => setSearch(e.target.value)}
+          onKeyDown={_onSearch}
+        />
         <Button onClick={_onCreate}>CREATE TOURNEMENT</Button>
       </FlexContainer>
       {/*Toolbar*/}
 
-      {loading && <LoadingState />}
-
-      {list.length < 1 ? (
-        <FailState onRetry={() => dispatch(getTournaments())} />
+      {loading ? (
+        <LoadingState />
       ) : (
-        <></>
+        <>
+          {hasError ? (
+            <FailState onRetry={() => dispatch(getTournaments())} />
+          ) : (
+            tournamantListComponent
+          )}
+        </>
       )}
-
-      <TournementLister>
-        {list.map((i: Tournement) => (
-          <TournamentCard
-            key={i.id}
-            tournament={i}
-            onDelete={_onDelete}
-            onEdit={_onEdit}
-          />
-        ))}
-      </TournementLister>
     </FlexContainer>
   );
 };

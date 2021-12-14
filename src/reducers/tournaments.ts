@@ -2,13 +2,17 @@ import { actionTypes } from './../actions/constants';
 import { Tournement } from '../features/tournement-management/types';
 
 interface IState {
+  rawList: Tournement[];
   list: Tournement[];
   loading: boolean;
+  hasError: boolean;
 }
 
 const initialState: IState = {
+  rawList: [],
   list: [],
-  loading: false
+  loading: false,
+  hasError: false
 };
 
 export default function tournaments(
@@ -22,10 +26,8 @@ export default function tournaments(
       return { ...state, loading: action.payload };
 
     case actionTypes.GET_TOURNAMENTS:
-      return { ...state, list: action.payload };
-
-    case actionTypes.CREATE_TOURNAMENT:
-      return { ...state, list: [...state.list, action.payload] };
+      const list = action.payload;
+      return { ...state, list, rawList: list, hasError: list.length === 0 };
 
     case actionTypes.UPDATE_TOURNAMENT:
       const updatedItem = action.payload as Tournement;
@@ -38,11 +40,27 @@ export default function tournaments(
         }
         return t;
       });
-      return { ...state, list: updatedList };
+      return { ...state, list: updatedList, rawList: updatedList };
 
     case actionTypes.DELETE_TOURNAMENT:
       const newList = state.list.filter(t => t.id !== action.payload);
-      return { ...state, list: newList };
+      return { ...state, list: newList, rawList: newList };
+
+    case actionTypes.SEARCH_TOURNAMENT:
+      const searchTerm = action.payload as string;
+
+      const searchedList =
+        searchTerm.length === 0
+          ? state.rawList
+          : state.list.filter(t =>
+              t.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+      return {
+        ...state,
+        list: searchedList,
+        hasError: searchedList.length === 0
+      };
 
     default:
       return state;
