@@ -84,17 +84,24 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
       </FlexContainer>
       {/*Toolbar*/}
 
-      {loading ? (
-        <LoadingState />
-      ) : (
-        <>
-          {hasError ? (
-            <FailState onRetry={() => dispatch(getTournaments())} />
-          ) : (
-            tournamantListComponent
-          )}
-        </>
-      )}
+      <FlexContainer
+        direction="column"
+        justify="center"
+        align={loading || hasError ? 'center' : 'flex-start'}
+      >
+        {loading ? (
+          <LoadingState />
+        ) : (
+          <>
+            {hasError ? (
+              <FailState onRetry={() => dispatch(getTournaments())} />
+            ) : (
+              tournamantListComponent
+            )}
+          </>
+        )}
+      </FlexContainer>
+      {/*Content*/}
     </FlexContainer>
   );
 };

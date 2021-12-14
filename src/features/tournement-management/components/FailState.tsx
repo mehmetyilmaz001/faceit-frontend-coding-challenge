@@ -8,7 +8,7 @@ interface FailStateProps {
 
 const FailState: FunctionComponent<FailStateProps> = ({ onRetry }) => {
   return (
-    <FlexContainer justify="center">
+    <FlexContainer justify="center" align="center">
       Something went wrong
       <Button onClick={onRetry}>RETRY</Button>
     </FlexContainer>
