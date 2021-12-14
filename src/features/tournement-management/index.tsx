@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  createTournament,
   deleteTournament,
   getTournaments,
   updateTournament
@@ -37,6 +38,14 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
   //   console.log('list', list);
   // }, [list]);
 
+  const _onCreate = () => {
+    const newTournamentName = window.prompt('New Tournament Name');
+
+    if (newTournamentName) {
+      dispatch(createTournament(newTournamentName));
+    }
+  };
+
   const _onDelete = (id: string) => {
     dispatch(deleteTournament(id));
   };
@@ -49,13 +58,17 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
     <FlexContainer direction="column" justify="center">
       <FlexContainer direction="row" justify="space-between">
         <Input placeholder="Search tournament..." />
-        <Button>CREATE TOURNEMENT</Button>
+        <Button onClick={_onCreate}>CREATE TOURNEMENT</Button>
       </FlexContainer>
       {/*Toolbar*/}
 
       {loading && <LoadingState />}
 
-      {list.length < 1 ? <FailState onRetry={() => {}} /> : <></>}
+      {list.length < 1 ? (
+        <FailState onRetry={() => dispatch(getTournaments())} />
+      ) : (
+        <></>
+      )}
 
       <TournementLister>
         {list.map((i: Tournement) => (

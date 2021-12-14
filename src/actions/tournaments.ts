@@ -30,6 +30,18 @@ export const getTournaments = () => async (dispatch: any) => {
   }
 };
 
+export const createTournament = (newTournamentName: string) => async (
+  dispatch: any
+) => {
+  const response = await fetch(API_TOURNAMENTS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: newTournamentName })
+  });
+  const createResponse = await response.json();
+  if (createResponse) dispatch(getTournaments());
+};
+
 export const updateTournament = (tournament: Tournement) => {
   return {
     type: actionTypes.UPDATE_TOURNAMENT,
@@ -42,4 +54,23 @@ export const deleteTournament = (id: string) => {
     type: actionTypes.DELETE_TOURNAMENT,
     payload: id
   };
+};
+
+export const searchTournament = (search: string) => async (dispatch: any) => {
+  dispatch({
+    type: actionTypes.SET_LOADING,
+    payload: true
+  });
+
+  setTimeout(() => {
+    dispatch({
+      type: actionTypes.SEARCH_TOURNAMENT,
+      payload: search
+    });
+
+    dispatch({
+      type: actionTypes.SET_LOADING,
+      payload: false
+    });
+  }, 1000);
 };

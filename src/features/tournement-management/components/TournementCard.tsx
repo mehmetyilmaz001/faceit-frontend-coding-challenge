@@ -32,7 +32,7 @@ const TournamentCard: FunctionComponent<TournamentCardProps> = ({
 }) => {
   const startDate = new Date(tournament.startDate);
 
-  const openEditPropt = () => {
+  const _openEditPropt = () => {
     const name = window.prompt('New tournement name', tournament.name);
     if (name) {
       onEdit({
@@ -40,6 +40,13 @@ const TournamentCard: FunctionComponent<TournamentCardProps> = ({
         name
       });
     }
+  };
+
+  const _confirmDelete = () => {
+    const confirm = window.confirm(
+      'Do you really want to delete this tournement?'
+    );
+    if (confirm) onDelete(tournament.id);
   };
 
   return (
@@ -56,8 +63,8 @@ const TournamentCard: FunctionComponent<TournamentCardProps> = ({
       </div>
 
       <ButtonsContiner>
-        <Button onClick={openEditPropt}>EDIT</Button>
-        <Button onClick={() => onDelete(tournament.id)}>DELETE</Button>
+        <Button onClick={_openEditPropt}>EDIT</Button>
+        <Button onClick={_confirmDelete}>DELETE</Button>
       </ButtonsContiner>
     </CardContainer>
   );

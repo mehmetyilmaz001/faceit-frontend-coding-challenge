@@ -24,6 +24,9 @@ export default function tournaments(
     case actionTypes.GET_TOURNAMENTS:
       return { ...state, list: action.payload };
 
+    case actionTypes.CREATE_TOURNAMENT:
+      return { ...state, list: [...state.list, action.payload] };
+
     case actionTypes.UPDATE_TOURNAMENT:
       const updatedItem = action.payload as Tournement;
       const updatedList = state.list.map(t => {
