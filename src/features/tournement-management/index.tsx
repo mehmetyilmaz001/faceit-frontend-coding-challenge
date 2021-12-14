@@ -8,6 +8,16 @@ import FailState from './components/FailState';
 import LoadingState from './components/LoadingState';
 import { tournamentsSelector } from '../../selectors/tournaments';
 import { Tournement } from './types';
+import TournementCard from './components/TournementCard';
+import styled from 'styled-components';
+
+const TournementLister = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  flex-wrap: wrap;
+`;
 
 interface TournementManagamentProps {}
 
@@ -35,9 +45,16 @@ const TournementManagament: FunctionComponent<TournementManagamentProps> = () =>
 
       {list.length < 1 ? <FailState onRetry={() => {}} /> : <></>}
 
-      {list.map((i: Tournement) => (
-        <>{i.name}</>
-      ))}
+      <TournementLister>
+        {list.map((i: Tournement) => (
+          <TournementCard
+            key={i.id}
+            tournement={i}
+            onDelete={() => {}}
+            onEdit={() => {}}
+          />
+        ))}
+      </TournementLister>
     </FlexContainer>
   );
 };
